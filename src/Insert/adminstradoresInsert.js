@@ -13,14 +13,14 @@ module.exports = {
       try{
         const adminstradores = await Adminstradores.query()
         .insert({
-            login: 'LisaAnn@gmail.com',
-            senha: '12345678',
-            telefone: '(38) 999036079'
+            login: req.body.login,
+            senha: req.body.senha,
+            telefone: req.body.telefone
         })
         return res.json(adminstradores)
     }
     catch{
-        return res.json('não funcionou pohan')
+        return res.json('Erro ao Cadastrar administrador')
     }
   }
 }
