@@ -12,6 +12,7 @@ const Pedidos = require('./controllers/pedidosController.js');
 const Produtos = require('./controllers/produtosController.js');
  // Funcionalidades
 routes.post('/_p_/carrinho/total', ValorTotal.index);
+routes.post('/_p_/login',Clientes.login)
 // adicionar ao  bd 
 routes.post('/_p_/add/SignUp', Clientes.store);
 routes.post('/_p_/add/administradores', Administradores.store);
