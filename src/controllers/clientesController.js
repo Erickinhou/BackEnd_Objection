@@ -39,7 +39,9 @@ module.exports = {
   },
   async login(req, res){
     try{
-    const clientes = await  Clientes.query().where('email', `${req.body.email}`).where('senha', `${req.body.senha}`)
+    const Salt = await  Clientes.query().where('email', `${req.body.email}`)
+    const senha = crypto.pbkdf2Sync(req.body.senha, Salt[0].salt, 10000, 512, 'sha512').toString('hex');
+    const clientes = await  Clientes.query().where('email', `${req.body.email}`).where('senha', `${senha}`)
     const token = jwt.sign(clientes[0].id, process.env.TOKEN_SECERT)
     return  res.send({ auth: true, token: token })
     }
