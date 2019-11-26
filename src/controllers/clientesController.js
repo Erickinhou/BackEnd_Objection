@@ -2,7 +2,8 @@ const Knex = require('knex');
 const knexConfig = require('../../knexfile');
 const Clientes = require('../models/clientes')
 const { Model } = require('objection');
-let jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 const dotenv = require('dotenv')
 dotenv.config();
 
@@ -37,8 +38,13 @@ module.exports = {
     }
   },
   async login(req, res){
-      const clientes = await  Clientes.query()
-      .where('email',`${req.body.email}`)
-      .where('senha',`${req.body.senha}`)
+    try{
+    const clientes = await  Clientes.query().where('email', `${req.body.email}`).where('senha', `${req.body.senha}`)
+    const token = jwt.sign(clientes[0].id, process.env.TOKEN_SECERT)
+    return  res.send({ auth: true, token: token })
+    }
+    catch{
+      return res.send({ auth: true, msg: 'Login Inválido' })
+    }
   }
 }
